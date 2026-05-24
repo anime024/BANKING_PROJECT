@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signup Form</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      margin-top: 100px;
+    }
+
+    .signup-form {
+      display: flex;
+      flex-direction: column;
+      width: 250px;
+      gap: 10px;
+    }
+
+    input,
+    button {
+      padding: 10px;
+    }
+
+    button {
+      background-color: green;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <form action="/signup" class="signup-form" method="post" >
+    <h2>Signup</h2>
+
+    <input type="text" name="name" placeholder="Enter Name" required>
+
+    <input type="email"  name="email" placeholder="Enter Email" required>
+
+    <input type="tel" name="phone" placeholder="Enter Phone Number" required>
+
+    <input type="password" name="password" placeholder="Enter Password" required>
+
+    <button type="submit">Signup</button>
+  </form>
+
+</body>
+</html>
