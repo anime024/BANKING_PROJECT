@@ -13,6 +13,9 @@ const userSchema=new mongoose.Schema({
         type:String,
         required:true,
     },
+    balance:{
+        type:Number,
+    },
     salt:{
         type:String
     },

@@ -7,7 +7,7 @@ const {User}=require("../models/user");
 
 
 function handleHomePage(req,res){
-    res.render('homepage');
+    res.render('homepage',{message:null});
 }
 
 function handleLoginPage(req,res){
@@ -51,8 +51,13 @@ async function handlePostLogin(req,res){
     bcrypt.compare(password,user.password,function(err,result){
         if(result==true)
     {
+        req.session.user={
+            name:user.name,
+            email:user.email,
+            id:user._id,
+        };
         console.log(`user found ${user}`)
-        return res.json({message:"success",user:user});
+        return res.redirect('/user/dashboard');
     }
     else
     {

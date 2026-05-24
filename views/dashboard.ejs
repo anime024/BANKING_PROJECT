@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Dashboard</title>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial, sans-serif;
+        }
+
+        body{
+            background-color:#f4f4f4;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            height:100vh;
+        }
+
+        .dashboard{
+            background:white;
+            padding:30px;
+            border-radius:10px;
+            width:350px;
+            text-align:center;
+            box-shadow:0 0 10px rgba(0,0,0,0.1);
+        }
+
+        h1{
+            margin-bottom:15px;
+            color:#333;
+        }
+
+        p{
+            margin-bottom:20px;
+            color:#666;
+        }
+
+        .logout-btn{
+            padding:10px 20px;
+            border:none;
+            background-color:#e74c3c;
+            color:white;
+            border-radius:5px;
+            cursor:pointer;
+            font-size:16px;
+        }
+
+        .logout-btn:hover{
+            background-color:#c0392b;
+        }
+
+      
+    .deposit-btn,
+    .withdraw-btn{
+    padding:8px 15px;
+    border:none;
+    color:white;
+    border-radius:5px;
+    cursor:pointer;
+    margin: 0 10px;   
+}
+
+.deposit-btn{
+    background-color:#27ae60;
+}
+
+.withdraw-btn{
+    margin-top: 10px;
+    background-color:#f39c12;
+}
+
+    </style>
+</head>
+
+<body>
+
+    <div class="dashboard">
+
+        <h1>Dashboard</h1>
+
+        <p>Welcome <%= user.name %></p>
+        <p>Email: <%= user.email %></p>
+        <p>Balance: <%= user.balance %></p>
+
+        <form action="/user/deposit" method="get">
+            
+            <button class="deposit-btn" type="submit">Deposit</button>
+        </form>
+        <form action="/user/withdraw" method="get">
+            
+            <button class="withdraw-btn" type="submit">Withdraw</button>
+        </form>
+
+        <br>
+
+        <form action="/user/logout" method="get">
+            <button class="logout-btn" type="submit">
+                Logout
+            </button>
+        </form>
+
+    </div>
+
+</body>
+</html>
