@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Transactions</title>
+
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            background:#f2d6d6;
+            margin:0;
+            padding:20px;
+        }
+
+        h2{
+            text-align:center;
+            margin-bottom:5px;
+        }
+
+        .container{
+            max-width:900px;
+            margin:auto;
+        }
+
+        .top-bar{
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            flex-direction:column;
+            margin-bottom:10px;
+        }
+
+        .balance-box{
+            margin-top:8px;
+            font-size:18px;
+            font-weight:bold;
+            color:#333;
+            background:#fff;
+            padding:8px 15px;
+            border-radius:6px;
+            box-shadow:0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .bottom-bar{
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            margin-bottom:15px;
+            margin-top:15px;
+        }
+
+        .btn{
+            text-decoration:none;
+            padding:8px 14px;
+            background:#f15bb3;
+            color:white;
+            border-radius:5px;
+            font-size:14px;
+        }
+
+        .btn:hover{
+            background:#0056b3;
+        }
+
+        table{
+            width:100%;
+            border-collapse: collapse;
+            background:rgb(249, 240, 240);
+            box-shadow:0 2px 5px rgba(239, 170, 170, 0.1);
+        }
+
+        th, td{
+            padding:12px;
+            text-align:center;
+            border-bottom:1px solid #150f0f;
+        }
+
+        th{
+            background:#ebfc67;
+            color:rgb(0, 0, 0);
+        }
+
+        tr:hover{
+            background:#f1f1f1;
+        }
+
+        .amount{
+            font-weight:bold;
+            color:rgb(0, 107, 128);
+        }
+
+        .date{
+            font-size:13px;
+            color:rgb(211, 124, 124);
+        }
+
+        .credit{
+            color:green;
+            font-weight:bold;
+        }
+
+        .debit{
+            color:red;
+            font-weight:bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="top-bar">
+        <h2>Your Transactions</h2>
+
+        <div class="balance-box">
+            Current Balance: ₹<%= balance || 0 %>
+        </div>
+    </div>
+
+    <% if(transactions && transactions.length > 0) { %>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Sender</th>
+                    <th>Receiver</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <% transactions.forEach(tx => { %>
+                    <tr>
+                        <td><%= tx.type %></td>
+                        <td><%= tx.sender %></td>
+                        <td><%= tx.receiver %></td>
+
+                        <td class="amount">₹<%= tx.amount %></td>
+
+                        <td>
+    <% if(tx.type === "Deposit") { %>
+        <span class="credit">DEPOSITED</span>
+
+    <% } else if(tx.type === "WithDraw") { %>
+        <span class="debit">WITHDRAWN</span>
+
+    <% } else if(tx.receiver === user) { %>
+        <span class="credit">CREDITED</span>
+
+    <% } else { %>
+        <span class="debit">DEBITED</span>
+    <% } %>
+</td>
+
+                        <td class="date">
+                            <%= new Date(tx.createdAt).toLocaleString() %>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+
+    <% } else { %>
+        <p style="text-align:center;">No transactions found</p>
+    <% } %>
+
+    <div class="bottom-bar">
+        <a href="/user/dashboard" class="btn">⬅ Dashboard</a>
+    </div>
+
+</div>
+
+</body>
+</html>

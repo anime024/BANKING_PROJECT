@@ -4,7 +4,7 @@ async function isLoggedIn(req,res,next) {
     }
     else
         {
-            return res.render("homepage",{message:"no authoriztion"})
+            return res.render("homepage",{message:"Login First"})
         }    
 }
 module.exports={isLoggedIn};

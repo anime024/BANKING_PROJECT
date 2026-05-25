@@ -56,7 +56,9 @@
 
       
     .deposit-btn,
-    .withdraw-btn{
+    .withdraw-btn,
+    .transfer-btn,
+    .transactions-btn{
     padding:8px 15px;
     border:none;
     color:white;
@@ -73,6 +75,14 @@
     margin-top: 10px;
     background-color:#f39c12;
 }
+.transfer-btn{
+    margin-top: 10px;
+    background-color:#8b38f8;
+}
+.transactions-btn{
+    margin-top: 10px;
+    background-color:#ee3a79;
+}
 
     </style>
 </head>
@@ -85,7 +95,7 @@
 
         <p>Welcome <%= user.name %></p>
         <p>Email: <%= user.email %></p>
-        <p>Balance: <%= user.balance %></p>
+        <p>Balance: <%= user.balance||0 %></p>
 
         <form action="/user/deposit" method="get">
             
@@ -94,6 +104,15 @@
         <form action="/user/withdraw" method="get">
             
             <button class="withdraw-btn" type="submit">Withdraw</button>
+        </form>
+        <form action="/bank/transfer" method="get">
+            
+            <button class="transfer-btn" type="submit">Transfer Money</button>
+        </form>
+
+        <form action="/user/transactions" method="get">
+            
+            <button class="transactions-btn" type="submit">Transactions</button>
         </form>
 
         <br>

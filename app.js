@@ -6,6 +6,7 @@ const session=require("express-session");
 
 const {authRouter}=require("./routes/authRoutes")
 const {UserRouter}=require("./routes/userRoutes")
+const {transferRouter}=require("./routes/transferRoutes")
 const bodyParser=require('body-parser');
 const app=express();
 app.set("view engine",'ejs')
@@ -29,7 +30,8 @@ mongoose.connect('mongodb://127.0.0.1:27017/mdg_pro')
 })
 
 app.use("/",authRouter);
-app.use("/user",UserRouter)
+app.use("/user",UserRouter);
+app.use('/bank',transferRouter);
 
 
 app.listen(process.env.port,()=>{

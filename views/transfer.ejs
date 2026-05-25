@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Transfer Money</title>
+
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            height:100vh;
+        }
+
+        .container{
+            background:white;
+            padding:25px;
+            border-radius:10px;
+            width:320px;
+            box-shadow:0 0 10px rgba(0,0,0,0.1);
+        }
+
+        h2{
+            text-align:center;
+            margin-bottom:20px;
+        }
+
+        input{
+            width:100%;
+            padding:10px;
+            margin-bottom:15px;
+            border:1px solid #ccc;
+            border-radius:5px;
+            box-sizing:border-box;
+        }
+
+        button{
+            width:100%;
+            padding:10px;
+            border:none;
+            background-color:#007bff;
+            color:white;
+            border-radius:5px;
+            cursor:pointer;
+        }
+
+        button:hover{
+            background-color:#0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Transfer Money</h2>
+
+        <% if (message) { %>
+         <h2><%= message %></h2>
+        <% } %>
+        <form action="/bank/transfer" method="POST">
+
+            <input 
+                type="email"
+                name="receiverEmail"
+                placeholder="Receiver Email"
+                required
+            >
+
+            <input 
+                type="number"
+                name="amount"
+                placeholder="Amount"
+                min="1"
+                required
+            >
+
+            <input 
+            type="password" 
+            name="password" 
+            placeholder="Enter password"
+            required
+        />
+
+            <button type="submit">
+                Transfer
+            </button>
+
+        </form>
+        <a href="/user/dashboard">Back to Dashboard</a>
+    </div>
+
+</body>
+</html>
