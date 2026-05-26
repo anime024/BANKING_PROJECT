@@ -1,49 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login Form</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login</title>
 
-  <style>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Arial, sans-serif;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      margin-top: 100px;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #e0eafc, #cfdef3);
     }
 
-    .login-form {
-      display: flex;
-      flex-direction: column;
-      width: 250px;
-      gap: 10px;
+    .container {
+        background: #fff;
+        padding: 35px 30px;
+        border-radius: 14px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        width: 90%;
+        max-width: 350px;
+        text-align: center;
     }
 
-    input,
+    h2 {
+        margin-bottom: 10px;
+        color: #222;
+    }
+
+    p {
+        font-size: 13px;
+        color: #666;
+        margin-bottom: 15px;
+    }
+
+    .message {
+        padding: 10px 12px;
+        border-radius: 8px;
+        font-size: 13px;
+        margin-bottom: 15px;
+        font-weight: 500;
+        background: #fdeaea;
+        color: #db766a;
+        border: 1px solid #f5b7b1;
+    }
+
+    
+
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    input {
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        outline: none;
+        transition: 0.2s;
+    }
+
+    input:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0,123,255,0.3);
+    }
+
     button {
-      padding: 10px;
+        padding: 12px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: 0.2s;
     }
 
-    button {
-      background-color: blue;
-      color: white;
-      border: none;
-      cursor: pointer;
+    .login-btn {
+        background: #007bff;
+        color: white;
     }
-  </style>
+
+    .login-btn:hover {
+        background: #0056b3;
+    }
+
+    .home-btn {
+        background: #6c757d;
+        color: white;
+    }
+
+    .home-btn:hover {
+        background: #565e64;
+    }
+
+    .btn-group {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+</style>
 </head>
+
 <body>
 
-  <form class="login-form" method="post" action="/login">
+<div class="container">
+
     <h2>Login</h2>
+    <p>Welcome back! Please enter your details.</p>
 
-    <input type="email" name="email" placeholder="Enter Email" required>
+    <% if (message) { %>
+        <div class="message">
+            <%= message %>
+        </div>
+    <% } %>
 
-    <input type="password" name="password" placeholder="Enter Password" required>
+    <form method="post" action="/login">
+        <input type="email" name="email" placeholder="Enter Email" required>
+        <input type="password" name="password" placeholder="Enter Password" required>
 
-    <button type="submit">Login</button>
-  </form>
+        <div class="btn-group">
+            <button type="submit" class="login-btn">Login</button>
+
+            <a href="/" style="text-decoration:none;">
+                <button type="button" class="home-btn">Home</button>
+            </a>
+        </div>
+    </form>
+
+</div>
 
 </body>
 </html>

@@ -36,7 +36,7 @@ async function handlePostTransfer(req,res){
         return res.render('transfer',{message:"INSUFFICIENT AMOUNT "});
     }
 
-    if(receiverUser._id.toString==senderUser._id.toString)
+    if(receiverUser._id.toString()==senderUser._id.toString())
     {
         return res.render('transfer',{message:"Cannot Transfer to Self "});
     }
@@ -64,4 +64,19 @@ async function handlePostTransfer(req,res){
         })
 
 }
-module.exports={handleGetTransfer,handlePostTransfer};
+
+async function handlePostFindUser(req, res)  {
+  const { email } = req.body;
+
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    return res.json({ success: false });
+  }
+
+  res.json({
+    success: true,
+    user: { name: user.name, email: user.email }
+  });
+}
+module.exports={handleGetTransfer,handlePostTransfer,handlePostFindUser};

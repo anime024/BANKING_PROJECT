@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 const { User } = require("../models/user");
-const {Transaction}=require("../models/transaction")
+const { Transaction } = require("../models/transaction");
 
 async function handleUserDashboard(req, res) {
   const { email } = req.session.user;
@@ -40,7 +40,11 @@ async function handlePostUserDeposit(req, res) {
     if (result == true) {
       const newbal = (user.balance || 0) + depamt;
       await User.updateOne({ email: email }, { balance: newbal });
-      await Transaction.create({sender:user.email,receiver:user.email,amount:depamt,type:"Deposit"})
+      await Transaction.create({
+        user: user.email,
+        amount: depamt,
+        type: "Deposit",
+      });
       return res.redirect("/user/dashboard");
     } else {
       return res.render("deposit", {
@@ -76,7 +80,11 @@ async function handlePostUserWithdraw(req, res) {
         return res.render("withdraw", { message: "insufficient balance" });
       }
       await User.updateOne({ email: email }, { balance: newbal });
-     await Transaction.create({sender:user.email,receiver:user.email,amount:withamt,type:"WithDraw"})
+      await Transaction.create({
+        user: user.email,
+        amount: withamt,
+        type: "Withdraw",
+      });
 
       return res.redirect("/user/dashboard");
     } else {
@@ -88,10 +96,31 @@ async function handlePostUserWithdraw(req, res) {
 }
 
 async function handleUserTransactions(req, res) {
-    const userEmail=req.session.user.email;
-    const Transactions=await Transaction.find({$or:[{sender:userEmail},{receiver:userEmail}]}).sort({createdAt:-1});
-    const user=await User.findOne({email:userEmail});
-  res.render("transactions",{transactions:Transactions,user:userEmail,balance:user.balance});
+  const userEmail = req.session.user.email;
+  let filter = {};
+  const { type, minAmount, maxAmount } = req.query;
+  if (type) {
+    filter.type = type;
+  }
+
+  if (minAmount || maxAmount) {
+    filter.amount = {};
+  }
+
+  if (minAmount) {
+    filter.amount.$gte = Number(minAmount);
+  }
+  if (maxAmount) {
+    filter.amount.$lte = Number(maxAmount);
+  }
+
+  const Transactions = await Transaction.find(filter).sort({createdAt:-1});
+  const user = await User.findOne({ email: userEmail });
+  res.render("transactions", {
+    transactions: Transactions,
+    user: userEmail,
+    balance: user.balance,
+  });
 }
 
 module.exports = {

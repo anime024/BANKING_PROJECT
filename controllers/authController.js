@@ -11,22 +11,38 @@ function handleHomePage(req,res){
 }
 
 function handleLoginPage(req,res){
-    res.render('login')
+    const message=req.query.msg||null;
+    res.render('login',{message})
 }
 
 async function handleGetSignUpPage(req,res){
-    res.render('signup')
+    const message=req.query.msg||null;
+    res.render('signup',{message})
 }
 
 
 async function handlePostSignUpPage(req,res){
     // console.log(req);
     const {name,email,phone,password}=req.body;
+
+    const user=await User.findOne({email:email});
+
+    if(user)
+    {
+        return res.redirect('/signup?msg=Email Already Exist ');
+    }
     bcrypt.genSalt(saltRounds,function(err,salt){
         bcrypt.hash(password,salt,async function(err,hash){
-            const result=await User.create({name:name,email:email,phone:phone,password:hash,salt:salt});
-    console.log("Result:" ,result);
-    return res.redirect('/login');
+            
+            try{
+                const result=await User.create({name:name,email:email,phone:phone,password:hash,salt:salt})
+                console.log("Result:" ,result);
+    return res.redirect('/login?msg=SignUp Succesfull. Login to go to Dashboard');
+            } catch (error) {
+                console.log("Error occured in database while connecting");
+                return res.redirect('/');
+            }
+    
         })
     })
     
@@ -38,14 +54,14 @@ async function handlePostLogin(req,res){
     if(!email || !password)
     {
         console.log("no email or password ")
-        return res.render('login');
+        return res.render('login',{message:null});
     }
 
     const user=await User.findOne({email:email});
     if(!user)
     {
-        console.log("no user with such email")
-        return res.render('signup')
+        
+        return res.redirect('/signup?msg=No Such User Found. SignUp First')
     }
 
     bcrypt.compare(password,user.password,function(err,result){
@@ -62,7 +78,7 @@ async function handlePostLogin(req,res){
     else
     {
         console.log("wrong password");
-        return res.render("login");
+        return res.redirect('/login?msg=Wrong Password');
     }
     })
     

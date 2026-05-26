@@ -1,79 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HomePage</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HomePage</title>
 
-    <style>
-        body{
-            font-family: Arial, sans-serif;
-            background: #f4f4f4;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-        }
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Arial, sans-serif;
+    }
 
-        h1{
-            margin-top: 60px;
-            color: #333;
-        }
+    body {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #e0eafc, #cfdef3);
+    }
 
-        h2{
-            color: #e63946;
-        }
+    .container {
+        background: white;
+        padding: 40px 50px;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        text-align: center;
+        width: 90%;
+        max-width: 420px;
+    }
 
-        .btn-container{
-            margin-top: 30px;
-        }
+    h1 {
+        font-size: 28px;
+        color: #222;
+        margin-bottom: 10px;
+        letter-spacing: 1px;
+    }
 
-        .btn{
-            display: inline-block;
-            padding: 10px 18px;
-            margin: 10px;
-            text-decoration: none;
-            color: white;
-            background: #007bff;
-            border-radius: 6px;
-            font-size: 16px;
-            transition: 0.2s;
-        }
+    p {
+        color: #666;
+        margin-bottom: 25px;
+        font-size: 14px;
+    }
 
-        .btn:hover{
-            background: #0056b3;
-        }
+    h2 {
+        color: #e63946;
+        font-size: 16px;
+        margin-bottom: 20px;
+    }
 
-        .signup{
-            background: #28a745;
-        }
+    .btn-container {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
 
-        .signup:hover{
-            background: #1e7e34;
-        }
+    .btn {
+        display: block;
+        padding: 12px;
+        border-radius: 10px;
+        text-decoration: none;
+        color: white;
+        font-weight: 600;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    }
 
-        .dashboard{
-            background: #ff9800;
-        }
+    .btn:hover {
+        transform: translateY(-2px);
+    }
 
-        .dashboard:hover{
-            background: #e68900;
-        }
-    </style>
+    .login {
+        background: #007bff;
+    }
+
+    .login:hover {
+        background: #0056b3;
+    }
+
+    .signup {
+        background: #28a745;
+    }
+
+    .signup:hover {
+        background: #1e7e34;
+    }
+
+    
+
+</style>
 </head>
 
 <body>
 
-    <h1>HOMEPAGE</h1>
+<div class="container">
+    <h1>WELCOME</h1>
+    <p>Your banking system dashboard</p>
 
     <% if (message) { %>
         <h2><%= message %></h2>
     <% } %>
 
     <div class="btn-container">
-        <a href="/login" class="btn">LOGIN</a>
+        <a href="/login" class="btn login">LOGIN</a>
         <a href="/signup" class="btn signup">SIGNUP</a>
-        <a href="/user/dashboard" class="btn dashboard">DASHBOARD</a>
     </div>
+</div>
 
 </body>
 </html>

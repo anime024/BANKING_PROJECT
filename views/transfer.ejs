@@ -57,40 +57,54 @@
     <div class="container">
         <h2>Transfer Money</h2>
 
-        <% if (message) { %>
-         <h2><%= message %></h2>
-        <% } %>
-        <form action="/bank/transfer" method="POST">
+<% if (message) { %>
+  <p><%= message %></p>
+<% } %>
 
-            <input 
-                type="email"
-                name="receiverEmail"
-                placeholder="Receiver Email"
-                required
-            >
+<input type="email" id="receiverEmail" placeholder="Receiver Email" />
 
-            <input 
-                type="number"
-                name="amount"
-                placeholder="Amount"
-                min="1"
-                required
-            >
+<button type="button" onclick="findUser()">Find</button>
 
-            <input 
-            type="password" 
-            name="password" 
-            placeholder="Enter password"
-            required
-        />
+<p id="receiverInfo"></p>
 
-            <button type="submit">
-                Transfer
-            </button>
+<form action="/bank/transfer" method="POST" id="transferForm" style="display:none;">
 
-        </form>
-        <a href="/user/dashboard">Back to Dashboard</a>
+  <input type="hidden" name="receiverEmail" id="hiddenEmail">
+
+  <input type="number" name="amount" placeholder="Amount" min="1" required />
+
+  <input type="password" name="password" placeholder="Password" required />
+
+  <button type="submit">Transfer</button>
+</form>
+
+<a href="/user/dashboard">Back</a>
     </div>
 
+    <script>
+async function findUser() {
+  const email = document.getElementById("receiverEmail").value;
+
+  const res = await fetch("/bank/find-user", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email })
+  });
+
+  const data = await res.json();
+
+  if (!data.success) {
+    document.getElementById("receiverInfo").innerText = "User not found";
+    return;
+  }
+
+  document.getElementById("receiverInfo").innerText =
+    "Receiver: " + data.user.name;
+
+  document.getElementById("hiddenEmail").value = data.user.email;
+
+  document.getElementById("transferForm").style.display = "block";
+}
+</script>
 </body>
 </html>

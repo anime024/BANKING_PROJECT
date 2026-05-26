@@ -1,6 +1,9 @@
 const mongoose=require("mongoose")
 
 const transactionSchema=new mongoose.Schema({
+    user:{
+        type:String,
+    },
     sender:{
         type:String
     },
@@ -9,9 +12,12 @@ const transactionSchema=new mongoose.Schema({
     },
     amount:{
         type:Number,
+        required:true,
     },
     type:{
         type:String,
+        enum:["Deposit","Withdraw","Transfer"],
+        required:true,
     }
 
 },{timestamps:true});

@@ -108,6 +108,21 @@
 
 <body>
 
+    <form method="GET" action="/user/transactions">
+
+  <select name="type">
+    <option value="">All</option>
+    <option value="Deposit">Deposit</option>
+    <option value="Withdraw">WithDraw</option>
+    <option value="Transfer">Transfer</option>
+  </select>
+
+  <input type="number" name="minAmount" placeholder="Min amount">
+  <input type="number" name="maxAmount" placeholder="Max amount">
+
+  <button type="submit">Filter</button>
+</form>
+
 <div class="container">
 
     <div class="top-bar">

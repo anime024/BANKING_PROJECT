@@ -1,33 +1,48 @@
 require('dotenv').config();
+
+console.log(process.env.uri);
+
 const express=require("express")
 const mongoose=require("mongoose");
+const {User}=require("./models/user")
 const path=require("path")
 const session=require("express-session");
+const {MongoStore} = require('connect-mongo');
 
 const {authRouter}=require("./routes/authRoutes")
 const {UserRouter}=require("./routes/userRoutes")
 const {transferRouter}=require("./routes/transferRoutes")
+
+
 const bodyParser=require('body-parser');
 const app=express();
 app.set("view engine",'ejs')
 app.set("views",path.join(__dirname,"views"));
+app.use(express.json());
 app.use(bodyParser.urlencoded({extended:true}))
-app.use(session({
-    secret:process.env.session_secret,
-    resave:false,
-    saveUninitialized:false,
-    cookie:{
-        maxAge:1000*300
-    }
-}))
 
-
-mongoose.connect('mongodb://127.0.0.1:27017/mdg_pro')
-.then(()=>{
+mongoose.connect(process.env.uri)
+.then(async()=>{
     console.log("mongoose connected succesfully");
+    await User.init();
 }).catch((err)=>{
     console.log(`error occured during connecting mongoose,${err}`)
 })
+
+app.use(session({
+    secret: process.env.session_secret,
+    resave: false,
+    saveUninitialized: false,
+
+    store: MongoStore.create({
+        mongoUrl: process.env.uri,
+        collectionName: "sessions"
+    }),
+
+    cookie: {
+        maxAge: 1000 * 60 * 5
+    }
+}));
 
 app.use("/",authRouter);
 app.use("/user",UserRouter);
