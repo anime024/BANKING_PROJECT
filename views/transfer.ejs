@@ -93,8 +93,12 @@ async function findUser() {
 
   const data = await res.json();
 
-  if (!data.success) {
+  if (!data.success ) {
     document.getElementById("receiverInfo").innerText = "User not found";
+    return;
+  }
+  if ( email===data.senderEmail) {
+    document.getElementById("receiverInfo").innerText = "Cannot Transfer To Self";
     return;
   }
 

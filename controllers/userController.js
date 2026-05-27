@@ -117,7 +117,7 @@ async function handleUserTransactions(req, res) {
     filter.amount.$lte = Number(maxAmount);
   }
 
-  const Transactions = await Transaction.find(filter).sort({ createdAt: -1 });
+  const Transactions = await Transaction.find({...filter,$or:[{sender:userEmail},{receiver:userEmail},{user:userEmail}]}).sort({ createdAt: -1 });
   const user = await User.findOne({ email: userEmail });
   res.render("transactions", {
     transactions: Transactions,
@@ -178,10 +178,15 @@ async function handleGetUserStatement(req, res) {
         ...Transactions.map((tx, i) => {
           let flow = "";
 
-      if (tx.receiver === userEmail || tx.user === userEmail) {
+      if (tx.type === "Deposit") {
         flow = "Credit";
-      } else {
+      } else if(tx.type==="Withdraw") {
         flow = "Debit";
+      }else if(tx.type==="Transfer" && tx.sender===userEmail){
+        flow="Debit";
+      }
+      else if(tx.type==="Transfer" && tx.receiver===userEmail){
+        flow="Credit";
       }
           return [
           

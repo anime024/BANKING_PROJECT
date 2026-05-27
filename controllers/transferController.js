@@ -79,6 +79,7 @@ async function handlePostTransfer(req,res){
 async function handlePostFindUser(req, res)  {
   const { email } = req.body;
 
+  const senderEmail=req.session.user.email;
   const user = await User.findOne({ email });
 
   if (!user) {
@@ -87,7 +88,8 @@ async function handlePostFindUser(req, res)  {
 
   res.json({
     success: true,
-    user: { name: user.name, email: user.email }
+    user: { name: user.name, email: user.email },
+    senderEmail
   });
 }
 module.exports={handleGetTransfer,handlePostTransfer,handlePostFindUser};
