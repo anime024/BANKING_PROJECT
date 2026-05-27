@@ -2,6 +2,8 @@ const bcrypt = require("bcrypt");
 const { User } = require("../models/user");
 const { Transaction } = require("../models/transaction");
 
+const PDFDocument = require("pdfkit");
+
 async function handleUserDashboard(req, res) {
   const { email } = req.session.user;
   const user = await User.findOne({ email });
@@ -96,6 +98,7 @@ async function handlePostUserWithdraw(req, res) {
 }
 
 async function handleUserTransactions(req, res) {
+
   const userEmail = req.session.user.email;
   let filter = {};
   const { type, minAmount, maxAmount } = req.query;
@@ -114,13 +117,88 @@ async function handleUserTransactions(req, res) {
     filter.amount.$lte = Number(maxAmount);
   }
 
-  const Transactions = await Transaction.find(filter).sort({createdAt:-1});
+  const Transactions = await Transaction.find(filter).sort({ createdAt: -1 });
   const user = await User.findOne({ email: userEmail });
   res.render("transactions", {
     transactions: Transactions,
     user: userEmail,
     balance: user.balance,
   });
+}
+
+async function handleGetUserStatement(req, res) {
+  try {
+    const doc = new PDFDocument({margin: 50});
+
+    res.setHeader("Content-Disposition", "attachment; filename=statement.pdf");
+
+    res.setHeader("Content-Type", "application/pdf");
+    doc.pipe(res);
+
+    const userEmail = req.session.user.email;
+
+    const Transactions = await Transaction.find({
+      $or: [
+        { sender: userEmail },
+        { receiver: userEmail },
+        { user: userEmail },
+      ],
+    }).sort({ createdAt: -1 });
+    const user = await User.findOne({ email: userEmail });
+
+    doc.fontSize(20).text("MDG Bank Statement", {
+      align: "center",
+    });
+
+    doc.moveTo(50, doc.y).lineTo(550, doc.y).stroke();
+
+    doc.moveDown();
+
+    doc.fontSize(15).text(`Name: ${user.name}`);
+
+    doc.text(`Email: ${user.email}`);
+
+    doc.text(`Balance: ${user.balance}`);
+
+
+    doc.moveDown();
+
+    doc.fontSize(12).text("Transactions");
+
+
+    doc.moveDown();
+
+    doc.table({
+      rowStyles: (i) => {
+        if (i === 0) return { backgroundColor: "#f84b4b" };
+        if (i % 2 === 0 && i !== 0) return { backgroundColor: "#ccc" };
+      },
+      data: [
+        ["S.No", "Type", "Amount", "Created At","FLOW"],
+        ...Transactions.map((tx, i) => {
+          let flow = "";
+
+      if (tx.receiver === userEmail || tx.user === userEmail) {
+        flow = "Credit";
+      } else {
+        flow = "Debit";
+      }
+          return [
+          
+          `${i + 1}`,
+          `${tx.type}`,
+          `${tx.amount}`,
+          `${new Date(tx.createdAt).toLocaleString()}`,
+          `${flow}`
+        ]}),
+      ],
+    });
+
+    doc.end();
+  } catch (error) {
+    console.log("Error in statement", error);
+    return res.send("Error inn statement downloading");
+  }
 }
 
 module.exports = {
@@ -131,4 +209,5 @@ module.exports = {
   handleGetUserWithdraw,
   handlePostUserWithdraw,
   handleUserTransactions,
+  handleGetUserStatement,
 };

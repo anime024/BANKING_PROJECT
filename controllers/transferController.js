@@ -1,13 +1,18 @@
 const {User}=require("../models/user")
 const bcrypt=require("bcrypt")
+const mongoose=require("mongoose")
 const {Transaction}=require("../models/transaction")
+
 
 function handleGetTransfer(req,res){
     res.render("transfer",{message:null});
 }
 
 async function handlePostTransfer(req,res){
-    console.log("handlePostTransfer")
+    const session= await mongoose.startSession();
+    try{
+        (await session).withTransaction(async()=>{
+            console.log("handlePostTransfer")
     const {receiverEmail,amount,password}=req.body;
     const transferAmount=Number(amount);
     const senderEmail=req.session.user.email;
@@ -62,6 +67,12 @@ async function handlePostTransfer(req,res){
                 return res.render("transfer",{message:"password not matched. try again "});
             }
         })
+        })
+    }catch(error){
+        console.log('Error while loggin transfer ',error)
+    }finally{
+        session.endSession();
+    }
 
 }
 
