@@ -21,6 +21,7 @@ app.set("views",path.join(__dirname,"views"));
 app.use(express.json());
 app.use(bodyParser.urlencoded({extended:true}))
 
+
 mongoose.connect(process.env.uri)
 .then(async()=>{
     console.log("mongoose connected succesfully");
@@ -44,11 +45,15 @@ app.use(session({
     }
 }));
 
+app.get("/", (req, res) => {
+  res.send("API running");
+});
+
 app.use("/",authRouter);
 app.use("/user",UserRouter);
 app.use('/bank',transferRouter);
 
-
-app.listen(process.env.port,()=>{
+const PORT=process.env.port||5000;
+app.listen(PORT,()=>{
     console.log("server started at 8000");
 })
