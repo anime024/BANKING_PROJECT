@@ -4,7 +4,7 @@ const saltRounds=10;
 
 const path=require("path")
 const {User}=require("../models/user");
-
+const {sendMail}=require('../utils/sendMail')
 
 function handleHomePage(req,res){
     res.render('homepage',{message:null});
@@ -12,6 +12,7 @@ function handleHomePage(req,res){
 
 function handleLoginPage(req,res){
     const message=req.query.msg||null;
+
     res.render('login',{message})
 }
 
@@ -35,9 +36,13 @@ async function handlePostSignUpPage(req,res){
         bcrypt.hash(password,salt,async function(err,hash){
             
             try{
+
+
                 const result=await User.create({name:name,email:email,phone:phone,password:hash,salt:salt})
+
+                await sendMail(result.email,"SIGN_UP",`Hello ${result.name}!.Account Created Succesfully` )
                 console.log("Result:" ,result);
-    return res.redirect('/login?msg=SignUp Succesfull. Login to go to Dashboard');
+                 return res.redirect('/login?msg=SignUp Succesfull. Login to go to Dashboard');
             } catch (error) {
                 console.log("Error occured in database while connecting");
                 return res.redirect('/');
@@ -64,7 +69,7 @@ async function handlePostLogin(req,res){
         return res.redirect('/signup?msg=No Such User Found. SignUp First')
     }
 
-    bcrypt.compare(password,user.password,function(err,result){
+    bcrypt.compare(password,user.password,async function(err,result){
         if(result==true)
     {
         req.session.user={
@@ -73,6 +78,7 @@ async function handlePostLogin(req,res){
             id:user._id,
         };
         console.log(`user found ${user}`)
+        await sendMail(user.email,"Login_Succesfull",`Hello ${user.name}!.loggin Succesfully` )
         return res.redirect('/user/dashboard');
     }
     else
