@@ -45,9 +45,9 @@ app.use(session({
     }
 }));
 
-app.get("/", (req, res) => {
-  res.send("API running");
-});
+// app.get("/", (req, res) => {
+//   res.send("API running");
+// });
 
 app.use("/",authRouter);
 app.use("/user",UserRouter);

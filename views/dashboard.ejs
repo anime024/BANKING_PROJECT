@@ -47,19 +47,41 @@
             color:white;
             border-radius:5px;
             cursor:pointer;
-            font-size:16px;
+            margin-top: 10px;
         }
 
         .logout-btn:hover{
             background-color:#c0392b;
+            font-weight: bold; 
+        }
+        .deposit-btn:hover{
+            background-color:#20613a;
+            font-weight: bold;       
+        }
+        .withdraw-btn:hover{
+            background-color:#8b662c;
+            font-weight: bold;       
+        }
+        .transfer-btn:hover{
+            background-color:#4e2583;
+            font-weight: bold;       
+        }
+        .transactions-btn:hover{
+            background-color:#832244;
+            font-weight: bold;       
+        }
+        .download-statement-btn:hover{
+            background-color:rgb(30, 86, 52);
+            font-weight: bold;       
         }
 
       
     .deposit-btn,
     .withdraw-btn,
     .transfer-btn,
-    .transactions-btn{
-    padding:8px 15px;
+    .transactions-btn,
+    .download-statement-btn{
+    padding:10px 20px;
     border:none;
     color:white;
     border-radius:5px;
@@ -83,13 +105,50 @@
     margin-top: 10px;
     background-color:#ee3a79;
 }
+.download-statement-btn{
+    margin-top: 10px;
+    background-color:#99f056;
+}
+
+
+.dashboard{
+    position:relative;
+}
+
+.account-links{
+    position:absolute;
+    top:15px;
+    right:15px;
+    display:flex;
+    gap:12px;
+}
+
+.account-links a{
+    text-decoration:none;
+    font-size:13px;
+    color:#555;
+    font-weight:bold;
+    transition:0.2s;
+}
+
+.account-links a:hover{
+    color:#3498db;
+    text-decoration:underline;
+}
 
     </style>
 </head>
 
 <body>
 
+
+    <div class="account-links">
+    <a href="/change-password">Change Password</a>
+</div>
+
     <div class="dashboard">
+
+        
 
         <h1>Dashboard</h1>
 
@@ -116,6 +175,10 @@
         </form>
 
         <br>
+
+        <form  action="/user/statement" method="get" target="_blank">
+        <button class="download-statement-btn" type="submit">Download Statement</button>
+    </form>
 
         <form action="/user/logout" method="get">
             <button class="logout-btn" type="submit">
