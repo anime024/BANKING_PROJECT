@@ -149,7 +149,7 @@ async function handlePostChangePassword(req, res) {
 
 function handleGetForgotPassword(req,res){
     const message = req.query.msg || null;
-  return res.render("forgotPassword", { message });
+  return res.render("forgotpassword", { message });
 }
 
 
