@@ -23,7 +23,7 @@ async function handleGetSignUpPage(req, res) {
 }
 
 async function handlePostSignUpPage(req, res) {
-  // console.log(req);
+  
   const { name, email, phone, password } = req.body;
 
   const user = await User.findOne({ email: email });
@@ -61,7 +61,7 @@ async function handlePostSignUpPage(req, res) {
 
 async function handlePostLogin(req, res) {
   const { email, password } = req.body;
-  console.log(email, password);
+  
   if (!email || !password) {
     console.log("no email or password ");
     return res.render("login", { message: null });
@@ -79,7 +79,7 @@ async function handlePostLogin(req, res) {
         email: user.email,
         id: user._id,
       };
-      console.log(`user found ${user}`);
+      // console.log(`user found ${user}`);
       await sendMail(
         user.email,
         "Login_Succesfull",
@@ -105,12 +105,11 @@ async function handlePostChangePassword(req, res) {
     if (!user) {
       return res.status(404).send("User not found");
     }
-    console.log(`User is ${user}`);
+    // console.log(`User is ${user}`);
     const hashedPassword = user.password;
-    console.log(`Prev Hashed Password${hashedPassword}`);
+    
     const match = await bcrypt.compare(currentPassword, hashedPassword);
     if (match) {
-      console.log(`inside mattch ${currentPassword},${newPassword}`);
       const salt = await bcrypt.genSalt(saltRounds);
       const hash = await bcrypt.hash(newPassword, salt);
       await User.findByIdAndUpdate(req.session.user.id, { password: hash });

@@ -15,7 +15,6 @@ async function handlePostTransfer(req, res) {
   const session = await mongoose.startSession();
   try {
     await session.withTransaction(async () => {
-      console.log("handlePostTransfer");
       const { receiverEmail, amount, password } = req.body;
       const transferAmount = Number(amount);
       const senderEmail = req.session.user.email;
