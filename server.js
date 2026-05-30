@@ -30,6 +30,8 @@ mongoose.connect(process.env.uri)
     console.log(`error occured during connecting mongoose,${err}`)
 })
 
+app.set("trust proxy", 1);
+
 app.use(session({
     secret: process.env.session_secret,
     resave: false,
@@ -53,7 +55,7 @@ app.use("/",authRouter);
 app.use("/user",UserRouter);
 app.use('/bank',transferRouter);
 
-const PORT=process.env.port||5000;
+const PORT=process.env.PORT ||5000;
 app.listen(PORT,()=>{
     console.log("server started at 8000");
 })
