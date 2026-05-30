@@ -20,7 +20,7 @@ async function sendMail(to, subject, text) {
             return;
         }
 
-        console.log("Real Success! Email ID:", data.id);
+        console.log("Success! Email ID:", data.id);
     } catch (error) {
         console.error("System connection error:", error);
     }

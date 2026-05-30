@@ -168,7 +168,7 @@ async function handlePostForgotPassword(req,res){
 
     await User.findOneAndUpdate({email:formEmail},{resetPasswordToken:passwordToken,resetPasswordExpires:Date.now()+24*60*60*1000})
     sendMail(user.email,"Passowrd Reset ",`You can reset your password by going to https://banking-project-8o0j.onrender.com/reset-password/${passwordToken} `).catch(err => console.error("Login email failed to send:", err));
-      return res.redirect("/user/dashboard");
+      return res.render('homepage',{message:"Link to Change password sent to mail. Change password from there and then login "})
 
     return res.render('forgotpassword',{message:"MAIL SENT TO EMAIL. RESET PASSWORD FROM THERE "})
 }
