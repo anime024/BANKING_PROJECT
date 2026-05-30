@@ -48,7 +48,7 @@ async function handlePostUserDeposit(req, res) {
         amount: depamt,
         type: "Deposit",
       });
-      await sendMail(user.email,"Deposit",`Hello ${user.name}! Money Deposited Succesfully. Your Updated Balance is ${newbal}` )
+      sendMail(user.email,"Deposit",`Hello ${user.name}! Money Deposited Succesfully. Your Updated Balance is ${newbal}` ).catch(err => console.error("Deposit email failed to send:", err));
       return res.redirect("/user/dashboard");
     } else {
       return res.render("deposit", {
@@ -89,7 +89,7 @@ async function handlePostUserWithdraw(req, res) {
         amount: withamt,
         type: "Withdraw",
       });
-      await sendMail(user.email,"WithDraw",`Hello ${user.name}! Money Withdraw Succesfully. Your Updated Balance is ${newbal}` )
+      sendMail(user.email,"WithDraw",`Hello ${user.name}! Money Withdraw Succesfully. Your Updated Balance is ${newbal}` ).catch(err => console.error("Withdraw email failed to send:", err));
       return res.redirect("/user/dashboard");
     } else {
       return res.render("withdraw", {
