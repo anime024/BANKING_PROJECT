@@ -169,7 +169,7 @@ async function handlePostForgotPassword(req,res){
     await User.findOneAndUpdate({email:formEmail},{resetPasswordToken:passwordToken,resetPasswordExpires:Date.now()+24*60*60*1000})
     await sendMail(user.email,"Passowrd Reset ",`You can reset your password by going to http://localhost:8000/reset-password/${passwordToken} `)
 
-    return res.render('forgotPassword',{message:"MAIL SENT TO EMAIL. RESET PASSWORD FROM THERE "})
+    return res.render('forgotpassword',{message:"MAIL SENT TO EMAIL. RESET PASSWORD FROM THERE "})
 }
 catch(error){
     return res.json({message:`Some error occured during  handlePostForgotPassword ${error}`})
