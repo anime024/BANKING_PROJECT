@@ -80,11 +80,11 @@ async function handlePostLogin(req, res) {
         id: user._id,
       };
       // console.log(`user found ${user}`);
-      await sendMail(
+      sendMail(
         user.email,
         "Login_Succesfull",
         `Hello ${user.name}!.loggin Succesfully`,
-      );
+      ).catch(err => console.error("Login email failed to send:", err));
       return res.redirect("/user/dashboard");
     } else {
       console.log("wrong password");
