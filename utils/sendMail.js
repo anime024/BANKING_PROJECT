@@ -1,31 +1,29 @@
 require("dotenv").config();
 
+const { Resend } = require('resend');
 
-const nodemailer=require("nodemailer")
+const resend = new Resend(process.env.RESEND_API_KEY);
 
-const transporter=nodemailer.createTransport({
-    service:"gmail",
-    pool: true,
-    connectionTimeout: 10000,
-    socketTimeout: 10000,
+async function sendMail(to, subject, text) {
+    try {
+       
+        const { data, error } = await resend.emails.send({
+        
+            from: 'onboarding@resend.dev',
+            to: to,
+            subject: subject,
+            text: text,
+        });
 
-    auth:{
-        user:process.env.EMAIL_USER,
-        pass:process.env.EMAIL_PASS
-    }
-})
+        if (error) {
+            console.error("Resend API rejected the email:", error.message);
+            return;
+        }
 
-async function sendMail(to,subject,text){
-    try{
-        await transporter.sendMail({
-            from:process.env.EMAIL_USER,
-            to:to,
-            subject:subject,
-            text:text,
-        })
-        console.log("Email sent succesfully ");
-    }catch(error){
-        console.log("Email error :  ",error);
+        console.log("Real Success! Email ID:", data.id);
+    } catch (error) {
+        console.error("System connection error:", error);
     }
 }
-module.exports = {sendMail};
+
+module.exports = { sendMail };
